@@ -245,15 +245,3 @@ async def chat_watcher_func(_, message):
 welcome_group = 2
 
 
-@app.on_message(filters.new_chat_members, group=welcome_group)
-async def welcome(_, message: Message):
-    chat_id = message.chat.id
-    await add_served_chat(chat_id)
-    for member in message.new_chat_members:
-        try:
-            if member.id == botid:
-                return await message.reply_text(
-                    f"Thanks for having me in {message.chat.title}\n\n{botname} is alive."
-                )
-        except:
-            return
