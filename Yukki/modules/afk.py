@@ -182,7 +182,7 @@ async def active_afk(_, message: Message):
         f"{message.from_user.first_name} is now afk!"
     )
 
-@app.on_message(filters.regex(["brb"]))
+@app.on_message(filters.regex("brb"))
 async def active_afk(_, message: Message):
     if message.sender_chat:
         return
@@ -233,14 +233,14 @@ async def active_afk(_, message: Message):
                 f"**{message.from_user.first_name}** is back online",
                 disable_web_page_preview=True,
             )
-    if len(message.command) == 1 and not message.reply_to_message:
+    if len(message.text) == 1 and not message.reply_to_message:
         details = {
             "type": "text",
             "time": time.time(),
             "data": None,
             "reason": None,
         }
-    elif len(message.command) > 1 and not message.reply_to_message:
+    elif len(message.text) > 1 and not message.reply_to_message:
         _reason = (message.text.split(None, 1)[1].strip())[:100]
         details = {
             "type": "text_reason",
@@ -249,7 +249,7 @@ async def active_afk(_, message: Message):
             "reason": _reason,
         }
     elif (
-        len(message.command) == 1
+        len(message.text) == 1
         and message.reply_to_message.animation
     ):
         _data = message.reply_to_message.animation.file_id
@@ -260,7 +260,7 @@ async def active_afk(_, message: Message):
             "reason": None,
         }
     elif (
-        len(message.command) > 1
+        len(message.text) > 1
         and message.reply_to_message.animation
     ):
         _data = message.reply_to_message.animation.file_id
@@ -271,7 +271,7 @@ async def active_afk(_, message: Message):
             "data": _data,
             "reason": _reason,
         }
-    elif len(message.command) == 1 and message.reply_to_message.photo:
+    elif len(message.text) == 1 and message.reply_to_message.photo:
         await app.download_media(
             message.reply_to_message, file_name=f"{user_id}.jpg"
         )
@@ -281,7 +281,7 @@ async def active_afk(_, message: Message):
             "data": None,
             "reason": None,
         }
-    elif len(message.command) > 1 and message.reply_to_message.photo:
+    elif len(message.text) > 1 and message.reply_to_message.photo:
         await app.download_media(
             message.reply_to_message, file_name=f"{user_id}.jpg"
         )
@@ -293,7 +293,7 @@ async def active_afk(_, message: Message):
             "reason": _reason,
         }
     elif (
-        len(message.command) == 1 and message.reply_to_message.sticker
+        len(message.text) == 1 and message.reply_to_message.sticker
     ):
         if message.reply_to_message.sticker.is_animated:
             details = {
@@ -313,7 +313,7 @@ async def active_afk(_, message: Message):
                 "reason": None,
             }
     elif (
-        len(message.command) > 1 and message.reply_to_message.sticker
+        len(message.text) > 1 and message.reply_to_message.sticker
     ):
         _reason = (message.text.split(None, 1)[1].strip())[:100]
         if message.reply_to_message.sticker.is_animated:
